@@ -1,0 +1,25 @@
+# Virtual environment
+venv
+
+# Python byte-compiled files
+__pycache__/
+*.py[cod]
+
+# Distribution / packaging
+*.egg-info/
+dist/
+build/
+
+# IDE-specific files (e.g., for PyCharm, VS Code)
+.idea/
+.vscode/
+
+# Windows-specific files
+Thumbs.db
+*.bak
+
+src/credentials.json
+token.json
+src/config_secrets.py
+
+conversations
