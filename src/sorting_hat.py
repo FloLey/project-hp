@@ -5,8 +5,7 @@ from audio_utils import AudioUtils
 from transcription import Transcriber
 from gpt_interface import GPTInterface
 from text_to_speech import OpenAITTS, ElevenLabsTTS
-from email_sender import EmailSender
-from config import START_WORD, STOP_WORD, GMAIL_CREDENTIALS_FILE
+from config import START_WORD, STOP_WORD
 from pydub import AudioSegment
 import numpy as np
 
@@ -23,7 +22,6 @@ class SortingHat:
         else:
             raise ValueError(
                 "Invalid TTS service. Choose 'openai' or 'elevenlabs'.")
-        self.email_sender = EmailSender()
         self.conversation_audio = AudioSegment.empty()
         self.conversation_dir = r"C:\Users\flore\OneDrive\Desktop\project-hp\conversations"
         os.makedirs(self.conversation_dir, exist_ok=True)
@@ -85,11 +83,8 @@ class SortingHat:
 
                 if self.transcriber.clean_text(STOP_WORD) in text:
                     print(
-                        "Mot d'arrêt détecté. Envoi de l'e-mail et retour au mode d'écoute initial.")
+                        "Mot d'arrêt détecté. Rretour au mode d'écoute initial.")
                     audio_file_path = self._save_conversation_audio()
-                    self.email_sender.send_conversation_email(
-                        conversation_history, "florent.lejoly@gmail.com", audio_file_path)
-                    break
 
                 gpt_response = self.gpt_interface.get_gpt_response(
                     text, conversation_history)
@@ -127,8 +122,8 @@ class SortingHat:
 
     def run(self):
         print(f"Dites '{START_WORD}' pour commencer la conversation avec GPT.")
-        print(f"Dites '{
-              STOP_WORD}' pour arrêter la conversation et revenir au mode d'écoute initial.")
+        print("Dites "
+              f"{STOP_WORD}' pour arrêter la conversation et revenir au mode d'écoute initial.")
         print("Appuyez sur Ctrl+C pour quitter le programme.")
 
         try:
